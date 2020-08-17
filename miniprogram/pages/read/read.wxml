@@ -1,0 +1,3 @@
+<view class="page">
+  <image wx:if="{{coverSrc}}" src="{{coverSrc}}" class="cover" mode="widthFix"></image>
+</view>

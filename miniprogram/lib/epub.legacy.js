@@ -22812,7 +22812,7 @@ var archive_Archive = /*#__PURE__*/function () {
     value: function createUrl(url, options) {
       var deferred = new core["defer"]();
 
-      var _URL = URL
+      var _URL = URL || webkitURL
 
       var tempUrl;
       var response;
@@ -22861,7 +22861,7 @@ var archive_Archive = /*#__PURE__*/function () {
   }, {
     key: "revokeUrl",
     value: function revokeUrl(url) {
-      var _URL = URL
+      var _URL = URL || webkitURL
 
       var fromCache = this.urlCache[url];
       if (fromCache) _URL.revokeObjectURL(fromCache);
@@ -22869,7 +22869,7 @@ var archive_Archive = /*#__PURE__*/function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      var _URL = URL
+      var _URL = URL || webkitURL
 
       for (var fromCache in this.urlCache) {
         _URL.revokeObjectURL(fromCache);
@@ -23232,7 +23232,7 @@ var store_Store = /*#__PURE__*/function () {
     value: function createUrl(url, options) {
       var deferred = new core["defer"]();
 
-      var _URL = URL
+      var _URL = URL || webkitURL
 
       var tempUrl;
       var response;
@@ -23281,7 +23281,7 @@ var store_Store = /*#__PURE__*/function () {
   }, {
     key: "revokeUrl",
     value: function revokeUrl(url) {
-      var _URL = URL
+      var _URL = URL || webkitURL
 
       var fromCache = this.urlCache[url];
       if (fromCache) _URL.revokeObjectURL(fromCache);
@@ -23289,7 +23289,7 @@ var store_Store = /*#__PURE__*/function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      var _URL = URL
+      var _URL = URL || webkitURL
 
       for (var fromCache in this.urlCache) {
         _URL.revokeObjectURL(fromCache);

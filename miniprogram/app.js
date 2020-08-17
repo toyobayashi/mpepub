@@ -2,5 +2,9 @@ App({
   onLaunch: function () {
     console.log('onLaunch')
   },
-  globalData: {}
+  globalData: {
+    book: null,
+    bookInfo: null,
+    zip: null
+  }
 })
