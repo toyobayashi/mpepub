@@ -1,0 +1,4 @@
+<view class="container">
+  <button bindtap="selectEpub"> 选择文件 </button>
+  <image wx:if="{{coverImage}}" src="{{coverImage}}" class="" mode="widthFix"></image>
+</view>
