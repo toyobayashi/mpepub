@@ -10,7 +10,8 @@
   class="domel__img {{node.attr.class || ''}}"
   wx:elif="{{node.tag === 'img'}}"
   src="{{node.attr.src}}"
-  mode="widthFix"></image>
+  mode="widthFix"
+  bindtap="_previewImg"></image>
 
 <view 
   class="domel__body {{node.attr.class || ''}}"

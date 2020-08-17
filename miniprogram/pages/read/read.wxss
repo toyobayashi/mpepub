@@ -1,3 +1,7 @@
 .cover {
   width: 100%;
 }
+
+.read-page {
+  padding: 0 20rpx;
+}

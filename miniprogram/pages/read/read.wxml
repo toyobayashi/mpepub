@@ -1,3 +1,3 @@
-<view class="page">
-  <domel wx:if="{{tree}}" node="{{tree}}"></domel>
+<view class="page read-page">
+  <domel class="domel" wx:if="{{tree}}" node="{{tree}}"></domel>
 </view>

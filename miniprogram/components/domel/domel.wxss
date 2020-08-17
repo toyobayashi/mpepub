@@ -1,0 +1,17 @@
+.domel__p {
+  margin: 20rpx auto;
+  text-indent: 2em;
+  color: #333;
+}
+
+.domel__h1 {
+  font-weight: bold;
+  font-size: 50rpx;
+  border-bottom: 1rpx solid #999;
+}
+
+.domel__img {
+  width: 100%;
+  display: block;
+  margin: 30rpx auto;
+}
