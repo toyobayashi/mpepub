@@ -1,3 +1,6 @@
 <view class="page read-page">
-  <domel class="domel" wx:if="{{tree}}" node="{{tree}}"></domel>
+  <view class="toc" wx:if="{{spineIndex < 0}}">
+    <view class="nav-item" wx:for="{{toc}}" data-index="{{index}}" bindtap="onTocTap">{{item.label}}</view>
+  </view>
+  <domel class="domel" wx:elif="{{tree}}" node="{{tree}}"></domel>
 </view>
