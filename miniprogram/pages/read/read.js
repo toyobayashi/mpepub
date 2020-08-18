@@ -33,13 +33,20 @@ Page({
     const cache = getGlobal(GlobalKey.ZIP)
     const info = getGlobal(GlobalKey.BOOK_INFO)
     const toc = this.data.toc[e.target.dataset.index]
-    const filepath = path.posix.join(book.container.directory, toc.href)
-    const spineIndex = info.spine.items.find(s => s.idref === path.posix.basename(toc.href))
+    let spineIndex = -1
+    for (let i = 0; i < info.spine.items.length; i++) {
+      const s = info.spine.items[i]
+      if (s.href === toc.href) {
+        spineIndex = i
+        break
+      }
+    }
+    const filepath = path.posix.join(book.container.directory, info.manifest[info.spine.items[spineIndex].idref].href)
     cache.readFile(filepath, ZipCache.Type.TEXT).then(xml => {
       const parser = new xmldom.DOMParser()
       const doc = parser.parseFromString(xml)
       elementToJson(doc.getElementsByTagName('html')[0].getElementsByTagName('body')[0], filepath, cache).then(tree => {
-        console.log(xml)
+        // console.log(xml)
         console.log(tree)
         this.setData({
           spineIndex,

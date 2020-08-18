@@ -1,63 +1,63 @@
-<block wx:if="{{node.children === undefined}}">{{node}}</block>
+<block wx:if="{{node.type === 'text'}}">{{node.text}}</block>
 
 <text
-  class="domel__span {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'span'}}">
+  class="domel__span {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'span'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </text>
 
 <image
-  class="domel__img {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'img'}}"
-  src="{{node.attr.src}}"
+  class="domel__img {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'img'}}"
+  src="{{node.attrs.src}}"
   mode="widthFix"
   bindtap="_previewImg"></image>
 
 <view 
-  class="domel__body {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'body'}}">
+  class="domel__body {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'body'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 
 <view 
-  class="domel__div {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'div'}}">
+  class="domel__div {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'div'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 
 <view 
-  class="domel__h1 {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'h1'}}">
+  class="domel__h1 {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'h1'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 
 <view 
-  class="domel__h2 {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'h2'}}">
+  class="domel__h2 {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'h2'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 
 <view 
-  class="domel__h3 {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'h3'}}">
+  class="domel__h3 {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'h3'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 
 <view 
-  class="domel__h4 {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'h4'}}">
+  class="domel__h4 {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'h4'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 
 <view 
-  class="domel__h5 {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'h5'}}">
+  class="domel__h5 {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'h5'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 
 <view 
-  class="domel__p {{node.attr.class || ''}}"
-  wx:elif="{{node.tag === 'p'}}">
+  class="domel__p {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'p'}}">
   <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
 </view>
 

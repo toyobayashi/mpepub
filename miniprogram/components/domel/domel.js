@@ -8,8 +8,8 @@ Component({
   methods: {
     _previewImg () {
       wx.previewImage({
-        current: this.properties.node.attr.src,
-        urls: [this.properties.node.attr.src],
+        current: this.properties.node.attrs.src,
+        urls: [this.properties.node.attrs.src],
       })
     }
   }
