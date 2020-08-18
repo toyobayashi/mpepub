@@ -1,6 +1,14 @@
 <view class="page read-page">
-  <view class="toc" wx:if="{{spineIndex < 0}}">
-    <view class="nav-item" wx:for="{{toc}}" wx:key="id" data-index="{{index}}" bindtap="onTocTap">{{item.label}}</view>
+  <view class="main">
+    <view class="toc" wx:if="{{spineIndex < 0}}">
+      <view class="nav-item" wx:for="{{toc}}" wx:key="id" data-index="{{index}}" bindtap="onTocTap">{{item.label}}</view>
+    </view>
+    <domel class="domel" wx:elif="{{tree}}" node="{{tree}}"></domel>
   </view>
-  <domel class="domel" wx:elif="{{tree}}" node="{{tree}}"></domel>
+  <view class="nav">
+    <button class="btn" bindtap="_showIndex">目录</button>
+    <text class="prog">0%</text>
+    <button class="btn" bindtap="_prev">上一页</button>
+    <button class="btn" bindtap="_next">下一页</button>
+  </view>
 </view>

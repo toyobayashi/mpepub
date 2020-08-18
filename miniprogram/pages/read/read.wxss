@@ -3,5 +3,31 @@
 }
 
 .read-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.read-page .main {
+  flex: 1;
   padding: 0 20rpx;
+  overflow-y: auto;
+}
+
+.read-page .nav {
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.read-page .nav .btn {
+  background: transparent;
+  padding: 0;
+}
+
+.read-page .nav .btn, .read-page .nav .prog {
+  flex: 1;
+  text-align: center;
+  color: #666;
 }
