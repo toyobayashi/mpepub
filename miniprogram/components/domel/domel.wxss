@@ -13,5 +13,6 @@
 .domel__img {
   width: 100%;
   display: block;
-  margin: 30rpx auto;
+  margin: 0 auto;
+  padding: 30rpx 0;
 }

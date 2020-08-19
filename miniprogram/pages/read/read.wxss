@@ -9,8 +9,12 @@
 
 .read-page .main {
   flex: 1;
-  padding: 0 20rpx;
   overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.read-page .main .main-wrap {
+  padding: 0 20rpx;
 }
 
 .read-page .nav {
