@@ -6,7 +6,8 @@ Component({
     }
   },
   data: {
-    svgStyle: ''
+    svgStyle: '',
+    imgStyle: ''
   },
   methods: {
     _previewImg () {
@@ -17,6 +18,17 @@ Component({
     },
     _jumpA () {
       console.log(this.properties.node)
+    },
+    _imgLoad (e) {
+      console.log(e.detail)
+      const query = wx.createSelectorQuery().in(this)
+      query.select('.domel__img').boundingClientRect(rect => {
+        const scale = e.detail.height / e.detail.width
+        const height = (rect.width < e.detail.width ? rect.width : e.detail.width) * scale
+        this.setData({
+          imgStyle: `width: ${e.detail.width}px;height: ${height}px;`
+        })
+      }).exec()
     },
     _svgImgLoad (e) {
       if (this.properties.node._data) {

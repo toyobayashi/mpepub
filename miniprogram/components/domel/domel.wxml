@@ -11,12 +11,13 @@
 </text>
 
 <image
-  style="{{node.attrs.style || ''}}"
+  style="{{node.attrs.style || ''}};{{imgStyle}}"
   class="domel__img {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'img'}}"
   src="{{node.attrs.src}}"
-  mode="widthFix"
-  bindtap="_previewImg"></image>
+  mode="aspectFit"
+  bindtap="_previewImg"
+  bindload="_imgLoad"></image>
 
 <image
   style="{{node.attrs.style || ''}};{{svgStyle || ''}}"
