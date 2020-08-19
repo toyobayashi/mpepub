@@ -1,0 +1,20 @@
+<view class="colorpicker-widget">
+  <view class="colorpicker-header">
+    <view class="picked-color {{pickedColorClass}}" style="{{pickedColorStyle}}" bindtap="_onPresentation">{{presentation}}</view>
+    <view class="original-color" style="{{originalColorStyle}}" bindtap="_revertColor"></view>
+  </view>
+  <view class="colorpicker-body">
+    <view class="saturation-wrap" bindtouchstart="_saturationBoxMouseDown" bindtouchmove="_saturationBoxMouseMove" bindtouchend="_saturationBoxMouseUp">
+      <canvas type="2d" id="canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;" class="saturation-box"></canvas>
+      <!-- <view class="saturation-selection" style="{{selectionStyle.top ? ('top: ' + selectionStyle.top + ';') : ''}}{{selectionStyle.left ? ('left: ' + selectionStyle.left + ';') : ''}}"></view> -->
+    </view>
+    <view class="strip opacity-strip {{opacityStripDown ? 'grabbing' : ''}}" bindtouchstart="_opacityStripMouseDown" bindtouchmove="_opacityStripMouseMove" bindtouchend="_opacityStripMouseUp">
+      <view class="overlay" style="{{opacityOverlayStyle}}"></view>
+      <view class="slider" style="top:{{opacityStripSliderTop}}"></view>
+    </view>
+    <view ref="hueStrip" class="strip hue-strip {{hueStripDown ? 'grabbing' : ''}}" bindtouchstart="_hueStripMouseDown" bindtouchmove="_hueStripMouseMove" bindtouchend="_hueStripMouseUp">
+      <view class="overlay"></view>
+      <view class="slider" style="top:{{hueStripSliderTop}}"></view>
+    </view>
+  </view>
+</view>
