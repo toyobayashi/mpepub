@@ -1,64 +1,122 @@
 <block wx:if="{{node.type === 'text'}}">{{node.text}}</block>
 
 <text
+  style="{{node.attrs.style || ''}}"
   class="domel__span {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'span'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </text>
 
 <image
+  style="{{node.attrs.style || ''}}"
   class="domel__img {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'img'}}"
   src="{{node.attrs.src}}"
   mode="widthFix"
   bindtap="_previewImg"></image>
 
-<view 
+<image
+  style="{{node.attrs.style || ''}};{{svgStyle || ''}}"
+  id="domel__svg"
+  class="domel__img {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'svg'}}"
+  src="{{node.attrs.src}}"
+  mode="aspectFit"
+  bindtap="_previewImg"
+  bindload="_svgImgLoad"></image>
+
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__body {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'body'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
 
-<view 
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__div {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'div'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
 
-<view 
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__h1 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h1'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
 
-<view 
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__h2 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h2'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
 
-<view 
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__h3 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h3'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
 
-<view 
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__h4 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h4'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
 
-<view 
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__h5 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h5'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
 
-<view 
+<view
+  style="{{node.attrs.style || ''}}"
   class="domel__p {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'p'}}">
-  <domel wx:for="{{node.children}}" wx:key="key" node="{{item}}"></domel>
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
 </view>
+
+<text
+  style="{{node.attrs.style || ''}}"
+  class="domel__a {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'a'}}"
+  bindtap="_jumpA">
+  <block wx:for="{{node.children}}" wx:key="key">
+    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <domel wx:else node="{{item}}"></domel>
+  </block>
+</text>
 
 <block wx:else></block>

@@ -1,8 +1,8 @@
-const { setGlobal, getGlobal } = require('../../util/global.js')
+const { getGlobal } = require('../../util/global.js')
 const { GlobalKey } = require('../../util/constants.js')
 const ZipCache = require('../../util/cache.js')
-const { xmldom, path } = require('../../util/deps.js')
-const { elementToJson } = require('../../util/dom.js')
+const { path } = require('../../util/deps.js')
+const { elementToJson, parser } = require('../../util/dom.js')
 
 function parseTree (spineIndex) {
   return new Promise((resolve, reject) => {
@@ -11,7 +11,6 @@ function parseTree (spineIndex) {
     const info = getGlobal(GlobalKey.BOOK_INFO)
     const filepath = path.posix.join(book.container.directory, info.manifest[info.spine.items[spineIndex].idref].href)
     cache.readFile(filepath, ZipCache.Type.TEXT).then(xml => {
-      const parser = new xmldom.DOMParser()
       const doc = parser.parseFromString(xml)
       elementToJson(doc.getElementsByTagName('html')[0].getElementsByTagName('body')[0], filepath, cache).then(resolve).catch(reject)
     })
