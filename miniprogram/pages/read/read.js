@@ -3,6 +3,7 @@ const { GlobalKey } = require('../../util/constants.js')
 const ZipCache = require('../../util/cache.js')
 const { path } = require('../../util/deps.js')
 const { elementToJson, parser } = require('../../util/dom.js')
+const { showToast } = require('../../util/modal.js')
 
 function parseTree (spineIndex) {
   return new Promise((resolve, reject) => {
@@ -78,10 +79,7 @@ Page({
     const info = getGlobal(GlobalKey.BOOK_INFO)
     const sections = info.spine.items
     if (this.data.spineIndex >= sections.length - 1) {
-      wx.showToast({
-        title: '已经到最后啦',
-        icon: 'none'
-      })
+      showToast('已经到最后啦')
       return
     }
 

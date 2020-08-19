@@ -14,7 +14,7 @@
 }
 
 .read-page .main .main-wrap {
-  padding: 0 20rpx;
+  padding: 10rpx 20rpx;
 }
 
 .read-page .nav {
