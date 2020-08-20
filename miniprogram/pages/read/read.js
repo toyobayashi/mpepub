@@ -147,10 +147,17 @@ Page({
   },
   _onScroll (e) {
     const scrollable = e.detail.scrollHeight - this.data.mainHeight
-    const percent = (Math.floor(e.detail.scrollTop / scrollable * 10000) / 100).toFixed(2) + '%'
-    scrollWaitUpdate = {
-      percent
+    if (scrollable === 0) {
+      scrollWaitUpdate = {
+        percent: '0.00%'
+      }
+    } else {
+      const percent = (Math.floor(e.detail.scrollTop / scrollable * 10000) / 100).toFixed(2) + '%'
+      scrollWaitUpdate = {
+        percent
+      }
     }
+
     clearTimeout(scrollTimer)
     scrollTimer = setTimeout(this._updateScroll, 200)
   }
