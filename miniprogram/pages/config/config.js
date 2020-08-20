@@ -2,7 +2,7 @@ const { formatColor, ColorType } = require('../../components/color-picker/color-
 
 Page({
   data: {
-    colorString: formatColor('#456'),
+    colorString: formatColor('#456', ColorType.RGB),
     _type: ColorType.RGB
   },
   onLoad () {

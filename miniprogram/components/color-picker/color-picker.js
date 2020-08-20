@@ -17,7 +17,7 @@ Component({
     },
     presentation: {
       type: String,
-      value: 'aa'
+      value: ''
     }
   },
 
@@ -49,14 +49,35 @@ Component({
     _opacitySlider: null,
     _hueStrip: null,
     _hueSlider: null,
+    _watching: false
   },
   methods: {
     setOriginalColor (color) {
       this.data._originalColor = toColor(color)
     },
-    _watchData () {
+    _onInnerColorChange (newColor) {
+      const pickedColorClass = (newColor.rgba.a < 0.5 ? isLighter.call(this.data._backgroundColor) : isLighter.call(newColor)) ? 'light' : ''
+    
+      const pickedColor = Color.Format.CSS.format(newColor) || ''
+      const pickedColorStyle = pickedColor ? `background-color:${pickedColor}` : ''
+
+      const { r, g, b } = newColor.rgba;
+      const opaque = new Color(new RGBA(r, g, b, 1));
+      const transparent = new Color(new RGBA(r, g, b, 0));
+      const opacityOverlayStyle = `background: linear-gradient(to bottom, ${opaque} 0%, ${transparent} 100%)`
+
+      this.setData({
+        pickedColorClass,
+        pickedColorStyle,
+        opacityOverlayStyle
+      })
+    },
+    _watchData (initialColor) {
+      if (this.data._watching) return
+      this.data._watching = true
       let originalColor = null
-      let innerColor = null
+      let innerColor = toColor(initialColor)
+      this._onInnerColorChange(innerColor)
 
       Object.defineProperties(this.data, {
         _originalColor: {
@@ -64,6 +85,7 @@ Component({
           enumerable: true,
           get: () => originalColor,
           set: (newColor) => {
+            if (newColor === originalColor) return
             newColor = toColor(newColor)
             originalColor = newColor
             const oc = Color.Format.CSS.format(newColor) || ''
@@ -78,23 +100,10 @@ Component({
           enumerable: true,
           get: () => innerColor,
           set: (newColor) => {
+            if (newColor === innerColor) return
             newColor = toColor(newColor)
             innerColor = newColor
-            const pickedColorClass = (newColor.rgba.a < 0.5 ? isLighter.call(this.data._backgroundColor) : isLighter.call(innerColor)) ? 'light' : ''
-    
-            const pickedColor = Color.Format.CSS.format(newColor) || ''
-            const pickedColorStyle = pickedColor ? `background-color:${pickedColor}` : ''
-    
-            const { r, g, b } = newColor.rgba;
-            const opaque = new Color(new RGBA(r, g, b, 1));
-            const transparent = new Color(new RGBA(r, g, b, 0));
-            const opacityOverlayStyle = `background: linear-gradient(to bottom, ${opaque} 0%, ${transparent} 100%)`
-    
-            this.setData({
-              pickedColorClass,
-              pickedColorStyle,
-              opacityOverlayStyle
-            })
+            this._onInnerColorChange(newColor)
             this.triggerEvent('change', newColor)
             if (this.data._canvasRect) {
               this._paint(this.data._canvasRect, newColor)
@@ -266,11 +275,9 @@ Component({
         this.data._hueSlider = res[0][1]
       })
 
-      this._watchData()
-
       const initialColor = this.properties.initialColor || '#0000'
+      this._watchData(initialColor)
       this.setOriginalColor(initialColor)
-      this.data._innerColor = toColor(initialColor)
     }
   }
 })
