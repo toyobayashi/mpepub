@@ -1,5 +1,5 @@
 {
   "usingComponents": {
-    "color-picker": "../../components/color-picker/color-picker"
+    "color-preview": "../../components/color-preview/color-preview"
   }
 }

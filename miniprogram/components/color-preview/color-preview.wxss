@@ -1,33 +1,14 @@
-.title {
-  font-size: 40rpx;
-  font-weight: bold;
-  padding: 40rpx;
+.preview-root {
+	display: flex;
+	align-items: center;
 }
 
-.config-item {
-  display: flex;
-  align-items: center;
-  
-  padding: 30rpx 40rpx;
-}
-
-.config-item .label {
-  width: 150rpx;
-}
-
-.config-item .slider {
-  flex: 1;
-}
-
-.config-item .value {
+.color-preview {
   width: 100rpx;
-  text-align: center;
-}
-.config-item .color-preview {
-  width: 100rpx;
-  height: 100%;
   border: 2rpx solid #000;
-  margin-left: 30rpx;
+	margin-left: 30rpx;
+	height: 50rpx;
+	margin-right: 30rpx;
 }
 
 .color-picker-modal {
@@ -49,6 +30,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.color-picker-modal .body .title {
+	font-size: 32rpx;
+	font-weight: bold;
+	margin-bottom: 20rpx;
+}
+
+.color-str {
+	font-size: 30rpx;
 }
 
 .btngroup {

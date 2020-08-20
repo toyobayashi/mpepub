@@ -1,41 +1,50 @@
-const { formatColor, ColorType } = require('../../components/color-picker/color-ex.js')
+const { localStorage, StorageKey } = require('../../util/storage.js')
 
 const fontmap = {
   0: '特小',
-  25: '小',
-  50: '标准',
-  75: '大',
-  100: '特大'
+  1: '小',
+  2: '标准',
+  3: '大',
+  4: '特大'
+}
+
+const fontStrMap = {
+  0: '24rpx',
+  1: '28rpx',
+  2: '32rpx',
+  3: '36rpx',
+  4: '40rpx',
+  '24rpx': 0,
+  '28rpx': 1,
+  '32rpx': 2,
+  '36rpx': 3,
+  '40rpx': 4
 }
 
 Page({
   data: {
-    colorString: formatColor('#456', ColorType.RGB),
-    _type: ColorType.RGB,
-    fontsize: 50,
-    fontsizeStr: '标准'
+    cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'],
+    _config: {},
+    fontsizevalue: 2,
+    fontsizeStr: fontmap[2],
+    fontcolor: '#333',
+    bgcolor: '#c7edcc',
   },
   onLoad () {
-  },
-  onShow () {
-  },
-  onChange (e) {
+    const config = localStorage.getItem(StorageKey.CONFIG) || {}
     this.setData({
-      colorString: formatColor(e.detail, this.data._type)
+      _config: config,
+      ...(config.color ? { fontcolor: config.color } : {}),
+      ...(config.backgroundColor ? { bgcolor: config.backgroundColor } : {}),
+      ...(config.fontSize ? {
+        fontsizevalue: fontStrMap[config.fontSize],
+        fontsizeStr: fontmap[fontStrMap[config.fontSize]]
+      } : {}),
     })
   },
-  onFlush (e) {
-    console.log(e.detail)
-  },
-  onPresentation (e) {
-    switch (this.data._type) {
-      case ColorType.RGB: this.data._type = ColorType.HEX; break
-      case ColorType.HEX: this.data._type = ColorType.HSL; break
-      case ColorType.HSL: this.data._type = ColorType.RGB; break
-      default: break
-    }
+  onShow () {
     this.setData({
-      colorString: formatColor(this.data.colorString, this.data._type)
+      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor']
     })
   },
   fontSizeChanging (e) {
@@ -47,8 +56,28 @@ Page({
   fontSizeChange (e) {
     const v = e.detail.value
     this.setData({
-      // fontsize: v,
       fontsizeStr: fontmap[v]
     })
+    this.saveConfig({ fontSize: fontStrMap[v] })
+  },
+  onFontColorChange (e) {
+    this.setData({
+      fontcolor: e.detail
+    })
+    this.saveConfig({ color: e.detail })
+  },
+  onBgColorChange (e) {
+    this.saveConfig({ backgroundColor: e.detail })
+    this.setData({
+      bgcolor: e.detail,
+      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor']
+    })
+  },
+  saveConfig (config) {
+    this.data._config = {
+      ...(this.data._config),
+      ...config
+    }
+    localStorage.setItem(StorageKey.CONFIG, this.data._config)
   }
 })

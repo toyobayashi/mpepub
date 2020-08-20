@@ -2,14 +2,19 @@ const { ePub } = require('../../util/deps.js')
 const { setGlobal, getGlobal } = require('../../util/global.js')
 const { GlobalKey } = require('../../util/constants.js')
 const ZipCache = require('../../util/cache.js')
+const { localStorage, StorageKey } = require('../../util/storage.js')
 
 Page({
   data: {
+    cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor']
   },
   onLoad () {
     console.log('index onLoad')
   },
   onShow () {
+    this.setData({
+      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor']
+    })
     const book = getGlobal(GlobalKey.BOOK)
     if (book) {
       book.destroy()
@@ -21,6 +26,11 @@ Page({
       setGlobal(GlobalKey.ZIP, null)
     }
     setGlobal(GlobalKey.BOOK_INFO, null)
+  },
+  goConfig () {
+    wx.navigateTo({
+      url: '/pages/config/config',
+    })
   },
   selectEpub (e) {
     wx.chooseMessageFile({

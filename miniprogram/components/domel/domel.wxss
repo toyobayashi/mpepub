@@ -1,7 +1,6 @@
 .domel__p {
   margin: 20rpx auto;
   text-indent: 2em;
-  color: #333;
 }
 
 .domel__h1 {

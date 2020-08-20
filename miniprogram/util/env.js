@@ -1,3 +1,4 @@
 module.exports = {
-  isDevTool: wx.getSystemInfoSync().platform === 'devtools'
+  isDevTool: wx.getSystemInfoSync().platform === 'devtools',
+  type: 'dev'
 }

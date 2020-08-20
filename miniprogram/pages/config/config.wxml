@@ -1,10 +1,20 @@
-<view class="page">
+<view class="page" style="background-color:{{cBackgroundColor}};">
   <view class="title">设置</view>
 
   <view class="config-item">
     <view class="label">字体大小</view>
-    <slider value="50" class="slider" bindchanging="fontSizeChanging" bindchange="fontSizeChange" step="25"/>
+    <slider value="{{fontsizevalue}}" class="slider" bindchanging="fontSizeChanging" bindchange="fontSizeChange" step="1" max="4" />
     <view class="value">{{fontsizeStr}}</view>
   </view>
-  <!-- <color-picker initial-color="#456" bindchange="onChange" bindflush="onFlush" bindpresentation="onPresentation" presentation="{{colorString}}"></color-picker> -->
+
+  <view class="config-item">
+    <view class="label">字体颜色</view>
+    <color-preview title="请选择字体颜色" picked-color="{{fontcolor}}" bindchange="onFontColorChange"></color-preview>
+  </view>
+
+  <view class="config-item">
+    <view class="label">背景颜色</view>
+    <color-preview title="请选择背景颜色" picked-color="{{bgcolor}}" bindchange="onBgColorChange"></color-preview>
+  </view>
+  
 </view>

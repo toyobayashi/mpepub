@@ -1,0 +1,19 @@
+<view class="preview-root">
+  <view
+    class="color-preview"
+    style="background-color:{{innerColor}}"
+    bindtap="showModal"></view>
+
+  <text class="color-str">{{innerColor}}</text>
+</view>
+
+<view class="color-picker-modal" wx:if="{{modalShow}}">
+  <view class="body">
+    <view wx:if="{{title}}" class="title">{{title}}</view>
+    <color-picker initial-color="{{innerColor}}" bindchange="onChange" bindflush="onFlush" bindpresentation="onPresentation" presentation="{{colorString}}"></color-picker>
+    <view class="btngroup">
+      <button class="confirm-btn" type="primary" bindtap="onConfirm">确定</button>
+      <button class="cancel-btn" bindtap="onCancel">取消</button>
+    </view>
+  </view>
+</view>

@@ -4,6 +4,7 @@ const ZipCache = require('../../util/cache.js')
 const { path } = require('../../util/deps.js')
 const { elementToJson, parser } = require('../../util/dom.js')
 const { showToast } = require('../../util/modal.js')
+const { localStorage, StorageKey } = require('../../util/storage.js')
 
 function parseTree (spineIndex) {
   return new Promise((resolve, reject) => {
@@ -21,8 +22,13 @@ function parseTree (spineIndex) {
 let scrollWaitUpdate = null
 let scrollTimer = 0
 
+const config = (localStorage.getItem(StorageKey.CONFIG) || {})
+
 Page({
   data: {
+    cBackgroundColor: config['backgroundColor'],
+    cFontSize: config['fontSize'],
+    cColor: config['color'] || '#333',
     toc: [],
     spineIndex: -1,
     tree: null,
@@ -58,6 +64,17 @@ Page({
     // });
   },
   onShow () {
+    const config = (localStorage.getItem(StorageKey.CONFIG) || {})
+    this.setData({
+      cBackgroundColor: config['backgroundColor'],
+      cFontSize: config['fontSize'],
+      cColor: config['color'],
+    })
+  },
+  _goConfig () {
+    wx.navigateTo({
+      url: '/pages/config/config',
+    })
   },
   _showIndex () {
     this.setData({

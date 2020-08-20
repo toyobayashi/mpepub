@@ -34,8 +34,7 @@ class Storage {
    * @returns {any}
    */
   getItem (key) {
-    const r = wx.getStorageSync(key)
-    return r == null ? null : r
+    return this.hasItem(key) ? wx.getStorageSync(key) : null
   }
 
   /**
