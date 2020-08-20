@@ -1,41 +1,37 @@
 const { Color, HSVA, RGBA } = require('./color.js')
+const { toColor } = require('./color-ex.js')
 
 const isLighter = Color.prototype.isLighter
 
 const dpr = wx.getSystemInfoSync().pixelRatio
 
-function revertColorInstance (fakeColor) {
-  if (fakeColor instanceof Color) return fakeColor
-  const { r: rr, g: gg, b: bb, a: aa } = fakeColor.rgba
-  return new Color(new RGBA(rr, gg, bb, aa))
-}
-
 Component({
+  options: {
+    pureDataPattern: /^_/
+  },
   properties: {
-    color: {
+    initialColor: {
       type: Object,
-      value: Color.fromHex('#0000')
+      optionalTypes: [String],
+      value: '#0000'
     },
     presentation: {
       type: String,
       value: 'aa'
     }
   },
-  data: {
-    innerColor: Color.fromHex('#0000'),
-    backgroundColor: Color.white,
-    originalColor: Color.fromHex('#0000'),
 
-    saturationBoxDown: false,
-    opacityStripDown: false,
-    hueStripDown: false,
+  data: {
+    // _innerColor
+    _backgroundColor: Color.white,
+    // _originalColor
 
     opacityStripSliderTop: '',
     hueStripSliderTop: '',
 
-    selectionStyle: {
-      top: '',
-      left: ''
+    _selectionStyle: {
+      top: 0,
+      left: 0
     },
 
     canvasWidth: '',
@@ -54,48 +50,68 @@ Component({
     _hueStrip: null,
     _hueSlider: null,
   },
-  observers: {
-    innerColor (__innerColor) {
-      __innerColor = revertColorInstance(__innerColor)
-      const pickedColorClass = (__innerColor.rgba.a < 0.5 ? isLighter.call(this.data.backgroundColor) : isLighter.call(this.data.innerColor)) ? 'light' : ''
-
-      const pickedColor = Color.Format.CSS.format(__innerColor) || ''
-      const pickedColorStyle = pickedColor ? `background-color:${pickedColor}` : ''
-
-      const { r, g, b } = __innerColor.rgba;
-      const opaque = new Color(new RGBA(r, g, b, 1));
-      const transparent = new Color(new RGBA(r, g, b, 0));
-      const opacityOverlayStyle = `background: linear-gradient(to bottom, ${opaque} 0%, ${transparent} 100%)`
-      
-      this.setData({
-        pickedColorClass,
-        pickedColorStyle,
-        opacityOverlayStyle
-      })
-      this.triggerEvent('change', __innerColor)
-      if (this.data._canvasRect) {
-        this._paint(this.data._canvasRect, __innerColor)
-      }
-    },
-    originalColor (__originalColor) {
-      __originalColor = revertColorInstance(__originalColor)
-      const oc = Color.Format.CSS.format(__originalColor) || ''
-      const originalColorStyle = oc ? `background-color:${oc}` : ''
-      this.setData({
-        originalColorStyle
-      })
-    }
-  },
   methods: {
+    setOriginalColor (color) {
+      this.data._originalColor = toColor(color)
+    },
+    _watchData () {
+      let originalColor = null
+      let innerColor = null
+
+      Object.defineProperties(this.data, {
+        _originalColor: {
+          configurable: true,
+          enumerable: true,
+          get: () => originalColor,
+          set: (newColor) => {
+            newColor = toColor(newColor)
+            originalColor = newColor
+            const oc = Color.Format.CSS.format(newColor) || ''
+            const originalColorStyle = oc ? `background-color:${oc}` : ''
+            this.setData({
+              originalColorStyle
+            })
+          }
+        },
+        _innerColor: {
+          configurable: true,
+          enumerable: true,
+          get: () => innerColor,
+          set: (newColor) => {
+            newColor = toColor(newColor)
+            innerColor = newColor
+            const pickedColorClass = (newColor.rgba.a < 0.5 ? isLighter.call(this.data._backgroundColor) : isLighter.call(innerColor)) ? 'light' : ''
+    
+            const pickedColor = Color.Format.CSS.format(newColor) || ''
+            const pickedColorStyle = pickedColor ? `background-color:${pickedColor}` : ''
+    
+            const { r, g, b } = newColor.rgba;
+            const opaque = new Color(new RGBA(r, g, b, 1));
+            const transparent = new Color(new RGBA(r, g, b, 0));
+            const opacityOverlayStyle = `background: linear-gradient(to bottom, ${opaque} 0%, ${transparent} 100%)`
+    
+            this.setData({
+              pickedColorClass,
+              pickedColorStyle,
+              opacityOverlayStyle
+            })
+            this.triggerEvent('change', newColor)
+            if (this.data._canvasRect) {
+              this._paint(this.data._canvasRect, newColor)
+            }
+          }
+        }
+      })
+    },
     _onPresentation () {
       this.triggerEvent('presentation', this.properties.presentation)
     },
     _revertColor () {
-      const c = revertColorInstance(this.data.originalColor)
-      this.setData({
-        innerColor: c
-      })
-      // this.triggerEvent('change', this.innerColor)
+      const c = this.data._originalColor
+      this.data._innerColor = c
+      const hsva = c.hsva;
+      this._updateSelectionPosition(hsva.s, hsva.v, this.data._saturationBoxRect.width, this.data._saturationBoxRect.height);
+      this._paint(this.data._canvasRect, c)
       this._hueSliderPosition(c)
       this._opacitySliderPosition(c)
       this.triggerEvent('flush', c)
@@ -123,21 +139,15 @@ Component({
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(this.data.selectionStyle.left,this.data.selectionStyle.top,10,0,360,false);
+      ctx.arc(this.data._selectionStyle.left,this.data._selectionStyle.top,10,0,360,false);
       ctx.lineWidth = 2;
       ctx.strokeStyle = isLighter.call(color) ? 'black' : 'white';
       ctx.stroke();
       ctx.closePath();
     },
-    _selectionStyle (s, v, width, height) {
-      this.setData({
-        selectionStyle: {
-          left: s * width * dpr,
-          top: (height - v * height) * dpr
-        }
-      }/* , () => {
-        this._paint(this.data._canvasRect, this.data.innerColor)
-      } */)
+    _updateSelectionPosition (s, v, width, height) {
+      this.data._selectionStyle.left = s * width * dpr
+      this.data._selectionStyle.top = (height - v * height) * dpr
     },
     _saturationChange (left, top) {
       const width = this.data._saturationBoxRect.width
@@ -145,75 +155,64 @@ Component({
       const s = Math.max(0, Math.min(1, left / width))
       const v = Math.max(0, Math.min(1, 1 - (top / height)))
 
-      this._selectionStyle(s, v, width, height)
+      this._updateSelectionPosition(s, v, width, height)
 
-      const hsva = revertColorInstance(this.data.innerColor).hsva;
-      this.setData({
-        innerColor: new Color(new HSVA(hsva.h, s, v, hsva.a))
-      })
+      // this._paint(this.data._canvasRect, this.data._innerColor)
+      const hsva = this.data._innerColor.hsva
+      this.data._innerColor = new Color(new HSVA(hsva.h, s, v, hsva.a))
     },
     _saturationBoxMouseDown (e) {
-      const left = this.data._canvasRect._left
-      const top = this.data._canvasRect._top
-      const x = e.changedTouches[0].pageX - left
-      const y = e.changedTouches[0].pageY - top
-      this._saturationChange(x, y)
+      this._saturationChange(
+        e.changedTouches[0].pageX - this.data._canvasRect._left,
+        e.changedTouches[0].pageY - this.data._canvasRect._top
+      )
     },
     _saturationBoxMouseMove (e) {
-      const left = this.data._canvasRect._left
-      const top = this.data._canvasRect._top
-      const x = e.changedTouches[0].pageX - left
-      const y = e.changedTouches[0].pageY - top
-      this._saturationChange(x, y)
+      this._saturationChange(
+        e.changedTouches[0].pageX - this.data._canvasRect._left,
+        e.changedTouches[0].pageY - this.data._canvasRect._top
+      )
     },
     _saturationBoxMouseUp (e) {
-      this.triggerEvent('flush', revertColorInstance(this.data.innerColor))
+      this.triggerEvent('flush', this.data._innerColor)
     },
     _stripChange (v, ref) {
       const height = this.data['_' + ref + 'Strip'].height - this.data['_' + ref + 'Slider'].height
       const value = Math.max(0, Math.min(1, 1 - (v / height)))
 
-      const innerColor = revertColorInstance(this.data.innerColor)
+      const innerColor = this.data._innerColor
       if (ref === 'opacity') {
         const hsva = innerColor.hsva
+        this.data._innerColor = new Color(new HSVA(hsva.h, hsva.s, hsva.v, value))
         this.setData({
-          innerColor: new Color(new HSVA(hsva.h, hsva.s, hsva.v, value)),
           [ref + 'StripSliderTop']: `${(1 - value) * height}px`
         })
       } else if (ref === 'hue') {
         const hsva = innerColor.hsva
         const h = (1 - value) * 360
+        this.data._innerColor = new Color(new HSVA(h === 360 ? 0 : h, hsva.s, hsva.v, hsva.a))
         this.setData({
-          innerColor: new Color(new HSVA(h === 360 ? 0 : h, hsva.s, hsva.v, hsva.a)),
           [ref + 'StripSliderTop']: `${(1 - value) * height}px`
         })
       }
     },
     _opacityStripMouseDown (e) {
-      const top = this.data._opacityStrip.top
-      const y = e.changedTouches[0].pageY - top
-      this._stripChange(y, 'opacity')
+      this._stripChange(e.changedTouches[0].pageY - this.data._opacityStrip.top, 'opacity')
     },
     _opacityStripMouseMove (e) {
-      const top = this.data._opacityStrip.top
-      const y = e.changedTouches[0].pageY - top
-      this._stripChange(y, 'opacity')
+      this._stripChange(e.changedTouches[0].pageY - this.data._opacityStrip.top, 'opacity')
     },
     _opacityStripMouseUp () {
-      this.triggerEvent('flush', revertColorInstance(this.data.innerColor))
+      this.triggerEvent('flush', this.data._innerColor)
     },
     _hueStripMouseDown (e) {
-      const top = this.data._hueStrip.top
-      const y = e.changedTouches[0].pageY - top
-      this._stripChange(y, 'hue')
+      this._stripChange(e.changedTouches[0].pageY - this.data._hueStrip.top, 'hue')
     },
     _hueStripMouseMove (e) {
-      const top = this.data._hueStrip.top
-      const y = e.changedTouches[0].pageY - top
-      this._stripChange(y, 'hue')
+      this._stripChange(e.changedTouches[0].pageY - this.data._hueStrip.top, 'hue')
     },
     _hueStripMouseUp () {
-      this.triggerEvent('flush', revertColorInstance(this.data.innerColor))
+      this.triggerEvent('flush', this.data._innerColor)
     },
     _hueSliderPosition (color) {
       const value = 1 - (color.hsva.h / 360)
@@ -248,9 +247,9 @@ Component({
               canvasWidth: width,
               canvasHeight: height
             })
-            const innerColor = revertColorInstance(this.data.innerColor)
+            const innerColor = this.data._innerColor
             const hsva = innerColor.hsva;
-            this._selectionStyle(hsva.s, hsva.v, width, height);
+            this._updateSelectionPosition(hsva.s, hsva.v, width, height);
             this._paint(canvas, innerColor)
             this._hueSliderPosition(innerColor)
             this._opacitySliderPosition(innerColor)
@@ -266,10 +265,12 @@ Component({
         this.data._opacitySlider = res[0][0]
         this.data._hueSlider = res[0][1]
       })
-      this.setData({
-        innerColor: this.properties.color,
-        originalColor: this.properties.color,
-      })
+
+      this._watchData()
+
+      const initialColor = this.properties.initialColor || '#0000'
+      this.setOriginalColor(initialColor)
+      this.data._innerColor = toColor(initialColor)
     }
   }
 })

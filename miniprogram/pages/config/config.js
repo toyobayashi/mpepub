@@ -1,9 +1,9 @@
-const { Color } = require('../../components/color-picker/color.js')
+const { formatColor, ColorType } = require('../../components/color-picker/color-ex.js')
 
 Page({
   data: {
-    color: Color.fromHex('#456'),
-    colorString: Color.fromHex('#456').toString()
+    colorString: formatColor('#456'),
+    _type: ColorType.RGB
   },
   onLoad () {
   },
@@ -11,14 +11,21 @@ Page({
   },
   onChange (e) {
     this.setData({
-      color: e.detail,
-      colorString: e.detail.toString()
+      colorString: formatColor(e.detail, this.data._type)
     })
   },
   onFlush (e) {
     console.log(e.detail)
   },
   onPresentation (e) {
-    console.log(e.detail)
+    switch (this.data._type) {
+      case ColorType.RGB: this.data._type = ColorType.HEX; break
+      case ColorType.HEX: this.data._type = ColorType.HSL; break
+      case ColorType.HSL: this.data._type = ColorType.RGB; break
+      default: break
+    }
+    this.setData({
+      colorString: formatColor(this.data.colorString, this.data._type)
+    })
   }
 })
