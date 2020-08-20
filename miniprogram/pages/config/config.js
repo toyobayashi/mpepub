@@ -1,9 +1,19 @@
 const { formatColor, ColorType } = require('../../components/color-picker/color-ex.js')
 
+const fontmap = {
+  0: '特小',
+  25: '小',
+  50: '标准',
+  75: '大',
+  100: '特大'
+}
+
 Page({
   data: {
     colorString: formatColor('#456', ColorType.RGB),
-    _type: ColorType.RGB
+    _type: ColorType.RGB,
+    fontsize: 50,
+    fontsizeStr: '标准'
   },
   onLoad () {
   },
@@ -26,6 +36,19 @@ Page({
     }
     this.setData({
       colorString: formatColor(this.data.colorString, this.data._type)
+    })
+  },
+  fontSizeChanging (e) {
+    const v = e.detail.value
+    this.setData({
+      fontsizeStr: fontmap[v]
+    })
+  },
+  fontSizeChange (e) {
+    const v = e.detail.value
+    this.setData({
+      // fontsize: v,
+      fontsizeStr: fontmap[v]
     })
   }
 })

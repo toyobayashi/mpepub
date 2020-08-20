@@ -1,3 +1,10 @@
 <view class="page">
-  <color-picker initial-color="#456" bindchange="onChange" bindflush="onFlush" bindpresentation="onPresentation" presentation="{{colorString}}"></color-picker>
+  <view class="title">设置</view>
+
+  <view class="config-item">
+    <view class="label">字体大小</view>
+    <slider value="50" class="slider" bindchanging="fontSizeChanging" bindchange="fontSizeChange" step="25"/>
+    <view class="value">{{fontsizeStr}}</view>
+  </view>
+  <!-- <color-picker initial-color="#456" bindchange="onChange" bindflush="onFlush" bindpresentation="onPresentation" presentation="{{colorString}}"></color-picker> -->
 </view>
