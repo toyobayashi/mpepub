@@ -33,7 +33,8 @@ Page({
     spineIndex: -1,
     tree: null,
     mainHeight: 0,
-    percent: '0.00%',
+    percent: '100.00%',
+    totalSpineLength: 0,
     scrollTop: 0,
     _domCache: {}
   },
@@ -46,17 +47,17 @@ Page({
     console.log(info)
     const q = wx.createSelectorQuery()
     q.select('.main').boundingClientRect().exec((res) => {
-      console.log(res[0].height)
-
       this.setData({
-        ...(info ? { toc: info.navigation.toc } : {}),
+        ...(info ? {
+          toc: info.navigation.toc,
+          totalSpineLength: info.spine.items.length
+        } : {}),
         mainHeight: res[0].height
       })
 
       if (book) {
         const bookKey = book.key()
         const state = localStorage.getItem(StorageKey.STATE) || {}
-        console.log(bookKey)
         if (!state[bookKey]) {
           const newState = {
             ...state,
@@ -188,7 +189,7 @@ Page({
     const scrollable = e.detail.scrollHeight - this.data.mainHeight
     if (scrollable === 0) {
       scrollWaitUpdate = {
-        percent: '0.00%'
+        percent: '100.00%'
       }
     } else {
       const percent = (Math.floor(e.detail.scrollTop / scrollable * 10000) / 100).toFixed(2) + '%'

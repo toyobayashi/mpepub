@@ -28,10 +28,18 @@
 .read-page .nav .btn {
   background: transparent;
   padding: 0;
-}
-
-.read-page .nav .btn, .read-page .nav .prog {
   flex: 1;
   text-align: center;
   color: #666;
+}
+
+.read-page .nav .prog {
+  flex: 2;
+  text-align: center;
+  color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 21rpx;
 }

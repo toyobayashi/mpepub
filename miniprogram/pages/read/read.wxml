@@ -10,7 +10,10 @@
   <view class="nav">
     <button class="btn" bindtap="_showIndex">目录</button>
     <button class="btn" bindtap="_goConfig">设置</button>
-    <text class="prog">{{percent}}</text>
+    <view class="prog">
+      <view wx:if="{{spineIndex >= 0}}">总页数：{{spineIndex + 1}} / {{totalSpineLength}}</view>
+      <view>当前页进度：{{percent}}</view>
+    </view>
     <button class="btn" bindtap="_prev">上一页</button>
     <button class="btn" bindtap="_next">下一页</button>
   </view>
