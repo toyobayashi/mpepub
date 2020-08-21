@@ -6,14 +6,14 @@ const { localStorage, StorageKey } = require('../../util/storage.js')
 
 Page({
   data: {
-    cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor']
+    cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || ''
   },
   onLoad () {
     console.log('index onLoad')
   },
   onShow () {
     this.setData({
-      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor']
+      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || ''
     })
     const book = getGlobal(GlobalKey.BOOK)
     if (book) {
