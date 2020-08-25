@@ -17,10 +17,11 @@ Component({
       })
     },
     _jumpA () {
-      console.log(this.properties.node)
+      // console.log(this.properties.node)
+      // TODO
     },
     _imgLoad (e) {
-      console.log(e.detail)
+      // console.log(e.detail)
       const query = wx.createSelectorQuery().in(this)
       query.select('.domel__img').boundingClientRect(rect => {
         const scale = e.detail.height / e.detail.width

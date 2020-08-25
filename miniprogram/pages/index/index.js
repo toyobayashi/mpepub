@@ -6,14 +6,13 @@ const { localStorage, StorageKey } = require('../../util/storage.js')
 
 Page({
   data: {
-    cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || ''
+    cBackgroundColor: ''
   },
   onLoad () {
-    console.log('index onLoad')
   },
   onShow () {
     this.setData({
-      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || ''
+      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || '#c7edcc'
     })
     const book = getGlobal(GlobalKey.BOOK)
     if (book) {
@@ -49,37 +48,30 @@ Page({
         const info = setGlobal(GlobalKey.BOOK_INFO, {})
 
         book.loaded.manifest.then(manifest => {
-          console.log('manifest')
           info.manifest = manifest
         })
 
         book.loaded.metadata.then(meta => {
-          console.log('meta')
           info.meta = meta
         })
 
         book.loaded.spine.then(spine => {
-          console.log('spine')
           info.spine = spine
         })
 
         book.loaded.cover.then(cover => {
-          console.log('cover')
           info.cover = cover
         })
         
         book.loaded.resources.then(resources => {
-          console.log('resources')
           info.resources = resources
         })
 
         book.loaded.pageList.then(pageList => {
-          console.log('pageList')
           info.pageList = pageList
         })
 
         book.loaded.navigation.then(navigation => {
-          console.log('navigation')
           info.navigation = navigation
         })
 

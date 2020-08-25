@@ -1,0 +1,35 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.app-name {
+  font-size: 64rpx;
+  font-weight: bold;
+  margin: 100rpx auto;
+}
+
+.app-name {
+  font-size: 64rpx;
+  font-weight: bold;
+}
+
+.introduction {
+  width: 80%;
+  margin: 40rpx auto;
+  font-size: 28rpx;
+}
+
+.btn {
+  margin: 40rpx auto;
+}
+
+.app-repo {
+  font-size: 24rpx;
+  color: #333;
+  position: absolute;
+  bottom: 50rpx;
+  text-align: center;
+}

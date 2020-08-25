@@ -1,20 +1,29 @@
 <view class="page read-page" style="background-color:{{cBackgroundColor}};">
-  <scroll-view class="main" scroll-y bindscroll="_onScroll" scroll-top="{{scrollTop}}">
+  <view class="main" wx:if="{{spineIndex < 0}}">
     <view class="main-wrap">
-      <view class="toc" wx:if="{{spineIndex < 0}}">
-        <view class="nav-item" wx:for="{{toc}}" wx:key="id" data-index="{{index}}" bindtap="onTocTap">{{item.label}}</view>
-      </view>
-      <domel class="domel" style="font-size: {{cFontSize}};color: {{cColor}};" wx:elif="{{tree}}" node="{{tree}}"></domel>
+      <view class="title">目 录</view>
+      <view
+        class="nav-item"
+        wx:for="{{toc}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bindtap="onTocTap">{{item.label}}</view>
+    </view>
+  </view>
+  <scroll-view class="main" scroll-y bindscroll="_onScroll" scroll-top="{{scrollTop}}" wx:elif="{{tree}}">
+    <view class="main-wrap">
+      <domel class="domel" style="font-size: {{cFontSize}};color: {{cColor}};" node="{{tree}}"></domel>
     </view>
   </scroll-view>
   <view class="nav">
-    <button class="btn" bindtap="_showIndex">目录</button>
-    <button class="btn" bindtap="_goConfig">设置</button>
-    <view class="prog">
+    <button class="btn" bindtap="_showIndex" wx:if="{{backIndex === -1}}">目录</button>
+    <button class="btn" bindtap="_back" wx:else>返回</button>
+    <button class="btn" bindtap="_goConfig" wx:if="{{backIndex === -1}}">设置</button>
+    <view class="prog" wx:if="{{backIndex === -1}}">
       <view wx:if="{{spineIndex >= 0}}">总页数：{{spineIndex + 1}} / {{totalSpineLength}}</view>
       <view>当前页进度：{{percent}}</view>
     </view>
-    <button class="btn" bindtap="_prev">上一页</button>
-    <button class="btn" bindtap="_next">下一页</button>
+    <button class="btn" bindtap="_prev" wx:if="{{backIndex === -1}}">上一页</button>
+    <button class="btn" bindtap="_next" wx:if="{{backIndex === -1}}">下一页</button>
   </view>
 </view>

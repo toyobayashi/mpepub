@@ -1,4 +1,12 @@
-<view class="page" style="background-color:{{cBackgroundColor}};">
-  <button bindtap="selectEpub"> 选择文件 </button>
-  <button bindtap="goConfig"> 设置 </button>
+<view class="page main" style="background-color:{{cBackgroundColor}};">
+  <view class="app-name">EPUB 阅读器</view>
+  <button class="btn" bindtap="selectEpub"> 选择 EPUB 文件 </button>
+  <button class="btn" bindtap="goConfig"> 设置 </button>
+  <view class="introduction">
+    微信小程序暂不支持选择手机本地存储的文件，可以先把需要打开的 EPUB 文件发送给【文件传输助手】或任意好友后，再从微信聊天记录中选择打开。
+  </view>
+  <view class="app-repo">
+    <view>v0.1.0</view>
+    <view>https://github.com/toyobayashi/mpepub</view>
+  </view>
 </view>

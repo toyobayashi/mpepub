@@ -23,7 +23,7 @@ const fontStrMap = {
 
 Page({
   data: {
-    cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || '',
+    cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || '#c7edcc',
     _config: {},
     fontsizevalue: 2,
     fontsizeStr: fontmap[2],
@@ -44,7 +44,7 @@ Page({
   },
   onShow () {
     this.setData({
-      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || ''
+      cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || '#c7edcc'
     })
   },
   fontSizeChanging (e) {

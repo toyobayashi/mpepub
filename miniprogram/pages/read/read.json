@@ -1,5 +1,6 @@
 {
   "usingComponents": {
     "domel": "../../components/domel/domel"
-  }
+  },
+  "navigationBarTitleText": ""
 }

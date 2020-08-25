@@ -22871,8 +22871,10 @@ var archive_Archive = /*#__PURE__*/function () {
     value: function destroy() {
       var _URL = URL || webkitURL
 
-      for (var fromCache in this.urlCache) {
-        _URL.revokeObjectURL(fromCache);
+      if (typeof _URL.revokeObjectURL === 'function') {
+        for (var fromCache in this.urlCache) {
+          _URL.revokeObjectURL(fromCache);
+        }
       }
 
       this.zip = undefined;

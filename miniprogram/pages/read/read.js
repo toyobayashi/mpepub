@@ -3,7 +3,7 @@ const { GlobalKey } = require('../../util/constants.js')
 const ZipCache = require('../../util/cache.js')
 const { path } = require('../../util/deps.js')
 const { elementToJson, parser } = require('../../util/dom.js')
-const { showToast, showModal } = require('../../util/modal.js')
+const { showToast, showModal, showLoading, hideLoading } = require('../../util/modal.js')
 const { localStorage, StorageKey } = require('../../util/storage.js')
 
 function parseTree (spineIndex) {
@@ -26,8 +26,8 @@ const config = (localStorage.getItem(StorageKey.CONFIG) || {})
 
 Page({
   data: {
-    cBackgroundColor: config['backgroundColor'] || '',
-    cFontSize: config['fontSize'] || '',
+    cBackgroundColor: config['backgroundColor'] || '#c7edcc',
+    cFontSize: config['fontSize'] || '32rpx',
     cColor: config['color'] || '#333',
     toc: [],
     spineIndex: -1,
@@ -36,15 +36,19 @@ Page({
     percent: '100.00%',
     totalSpineLength: 0,
     scrollTop: 0,
-    _domCache: {}
+    backIndex: -1,
+    _innerScrollTop: 0,
+    _domCache: {},
   },
   onLoad () {
-    console.log('read onLoad')
     const book = getGlobal(GlobalKey.BOOK)
     const info = getGlobal(GlobalKey.BOOK_INFO)
     // const cache = getGlobal(GlobalKey.ZIP)
-    console.log(book)
-    console.log(info)
+    // console.log(book)
+    // console.log(info)
+    wx.setNavigationBarTitle({
+      title: info.meta.title,
+    })
     const q = wx.createSelectorQuery()
     q.select('.main').boundingClientRect().exec((res) => {
       this.setData({
@@ -67,7 +71,7 @@ Page({
             } 
           }
           localStorage.setItem(StorageKey.STATE, newState)
-        } else {
+        } else if (state[bookKey].spineIndex !== -1) {
           showModal('是否回到上次阅读的地方？', '提示', true).then((res) => {
             if (res.cancel) return
             if (state[bookKey].spineIndex === -1) {
@@ -92,9 +96,9 @@ Page({
   onShow () {
     const config = (localStorage.getItem(StorageKey.CONFIG) || {})
     this.setData({
-      cBackgroundColor: config['backgroundColor'] || '',
-      cFontSize: config['fontSize'] || '',
-      cColor: config['color'] || '',
+      cBackgroundColor: config['backgroundColor'] || '#c7edcc',
+      cFontSize: config['fontSize'] || '32rpx',
+      cColor: config['color'] || '#333',
     })
   },
   _goConfig () {
@@ -103,11 +107,21 @@ Page({
     })
   },
   _showIndex () {
+    showLoading()
     this.setData({
       spineIndex: -1,
+      backIndex: this.data.spineIndex/* ,
       tree: null,
-      scrollTop: 0
-    })
+      scrollTop: 0 */
+    }, hideLoading)
+  },
+  _back () {
+    showLoading()
+    this.setData({
+      spineIndex: this.data.backIndex,
+      backIndex: -1,
+      scrollTop: this.data._innerScrollTop
+    }, hideLoading)
   },
   _prev () {
     if (this.data.spineIndex === -1) return
@@ -160,24 +174,35 @@ Page({
     localStorage.setItem(StorageKey.STATE, state)
   },
   _renderSpine (spineIndex, scrollTop = 0) {
-    if (this.data._domCache[spineIndex]) {
-      this.setData({
-        spineIndex,
-        tree: this.data._domCache[spineIndex],
-        scrollTop
-      })
-      this._saveReadingPosition(spineIndex, scrollTop)
-      return Promise.resolve()
-    }
+    return new Promise((resolve) => {
+      showLoading()
+      if (this.data._domCache[spineIndex]) {
+        this.setData({
+          backIndex: -1,
+          spineIndex,
+          tree: this.data._domCache[spineIndex],
+          scrollTop
+        }, () => {
+          hideLoading()
+          resolve()
+        })
+        this._saveReadingPosition(spineIndex, scrollTop)
+        return
+      }
 
-    return parseTree(spineIndex).then(tree => {
-      this.data._domCache[spineIndex] = tree
-      this.setData({
-        spineIndex,
-        tree,
-        scrollTop
+      parseTree(spineIndex).then(tree => {
+        this.data._domCache[spineIndex] = tree
+        this.setData({
+          backIndex: -1,
+          spineIndex,
+          tree,
+          scrollTop
+        }, () => {
+          hideLoading()
+          resolve()
+        })
+        this._saveReadingPosition(spineIndex, scrollTop)
       })
-      this._saveReadingPosition(spineIndex, scrollTop)
     })
   },
   _updateScroll (scrollTop) {
@@ -188,11 +213,13 @@ Page({
   _onScroll (e) {
     const scrollable = e.detail.scrollHeight - this.data.mainHeight
     if (scrollable === 0) {
+      this.data._innerScrollTop = 0
       scrollWaitUpdate = {
         percent: '100.00%'
       }
     } else {
       const percent = (Math.floor(e.detail.scrollTop / scrollable * 10000) / 100).toFixed(2) + '%'
+      this.data._innerScrollTop = e.detail.scrollTop
       scrollWaitUpdate = {
         percent
       }
