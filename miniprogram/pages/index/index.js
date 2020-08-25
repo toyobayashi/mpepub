@@ -1,8 +1,9 @@
 const { ePub } = require('../../util/deps.js')
-const { setGlobal, getGlobal } = require('../../util/global.js')
+const { setGlobal, getGlobal, removeGlobal } = require('../../util/global.js')
 const { GlobalKey } = require('../../util/constants.js')
 const ZipCache = require('../../util/cache.js')
 const { localStorage, StorageKey } = require('../../util/storage.js')
+const { alert, showLoading, hideLoading } = require('../../util/modal.js')
 
 Page({
   data: {
@@ -43,7 +44,14 @@ Page({
         const book = setGlobal(GlobalKey.BOOK, ePub({
           replacements: 'base64'
         }))
-        book.open(data)
+
+        showLoading()
+        book.open(data).catch(() => {
+          hideLoading()
+          removeGlobal(GlobalKey.BOOK)
+          removeGlobal(GlobalKey.BOOK_INFO)
+          alert('不是有效的 EPUB 文件')
+        })
 
         const info = setGlobal(GlobalKey.BOOK_INFO, {})
 
@@ -77,6 +85,7 @@ Page({
 
         book.ready.then(() => {
           setGlobal(GlobalKey.ZIP, new ZipCache(book.archive.zip))
+          hideLoading()
           wx.navigateTo({
             url: '/pages/read/read',
           })
