@@ -60,7 +60,8 @@ Page({
       })
 
       if (book) {
-        const bookKey = book.key()
+        const bookKey = book.key() + ':' + book.__hash
+        delete book.__hash
         const state = localStorage.getItem(StorageKey.STATE) || {}
         if (!state[bookKey]) {
           const newState = {

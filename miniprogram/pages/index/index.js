@@ -4,6 +4,20 @@ const { GlobalKey } = require('../../util/constants.js')
 const ZipCache = require('../../util/cache.js')
 const { localStorage, StorageKey } = require('../../util/storage.js')
 const { alert, showLoading, hideLoading } = require('../../util/modal.js')
+const { Md5 } = require('../../lib/md5.js')
+
+/**
+ * @param {ArrayBuffer} arrrayBuffer
+ * @returns {string} 
+ */
+function arrayBufferToHex (arrrayBuffer) {
+  const u8array = new Uint8Array(arrrayBuffer)
+  let str = ''
+  for (let i = 0; i < u8array.length; i++) {
+    str += ('00' + u8array[i].toString(16)).slice(-2)
+  }
+  return str
+}
 
 Page({
   data: {
@@ -44,6 +58,8 @@ Page({
         const book = setGlobal(GlobalKey.BOOK, ePub({
           replacements: 'base64'
         }))
+
+        book.__hash = arrayBufferToHex(new Md5().update(data).digest())
 
         showLoading()
         book.open(data).catch(() => {

@@ -17,4 +17,5 @@
     <color-preview title="请选择背景颜色" picked-color="{{bgcolor}}" bindchange="onBgColorChange"></color-preview>
   </view>
   
+  <button class="config-button" bindtap="clearBookCache">清除书籍缓存</button>
 </view>

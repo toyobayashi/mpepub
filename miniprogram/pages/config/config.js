@@ -1,4 +1,5 @@
 const { localStorage, StorageKey } = require('../../util/storage.js')
+const { showToast } = require('../../util/modal.js')
 
 const fontmap = {
   0: '特小',
@@ -79,5 +80,13 @@ Page({
       ...config
     }
     localStorage.setItem(StorageKey.CONFIG, this.data._config)
+  },
+  clearBookCache () {
+    try {
+      localStorage.clear()
+      showToast('清除成功')
+    } catch (_) {
+      showToast('操作失败')
+    }
   }
 })

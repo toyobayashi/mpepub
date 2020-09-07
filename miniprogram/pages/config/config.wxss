@@ -30,6 +30,10 @@
   margin-left: 30rpx;
 }
 
+.config-button {
+  margin: 30rpx auto;
+}
+
 .color-picker-modal {
   position: absolute;
   width: 100%;
