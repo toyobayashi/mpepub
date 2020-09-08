@@ -3,6 +3,9 @@
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global.denostd = global.denostd || {}, global.denostd.hash = global.denostd.hash || {}, global.denostd.hash.md5 = {})));
 }(this, (function (exports) { 'use strict';
+    var text = require('./text.js')
+    var TextEncoder = text.TextEncoder
+    var TextDecoder = text.TextDecoder
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
