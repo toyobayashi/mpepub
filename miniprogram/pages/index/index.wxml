@@ -6,7 +6,7 @@
     微信小程序暂不支持选择手机本地存储的文件，可以先把需要打开的 EPUB 文件发送给【文件传输助手】或任意好友后，再从微信聊天记录中选择打开。
   </view>
   <view class="app-repo">
-    <view>v0.1.3</view>
+    <view>v0.1.4</view>
     <view>https://github.com/toyobayashi/mpepub</view>
   </view>
 </view>
