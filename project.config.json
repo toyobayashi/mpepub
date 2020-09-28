@@ -31,7 +31,7 @@
 		"userConfirmedUseCompilerModuleSwitch": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.12.1",
+	"libVersion": "2.13.0",
 	"appid": "wxc9b6526ffefd8a97",
 	"projectname": "mpepub",
 	"debugOptions": {

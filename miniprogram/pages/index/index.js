@@ -6,6 +6,10 @@ const { localStorage, StorageKey } = require('../../util/storage.js')
 const { alert, showLoading, hideLoading } = require('../../util/modal.js')
 const { Md5 } = require('../../lib/md5.js')
 
+const log = typeof wx.getRealtimeLogManager === 'function' ? wx.getRealtimeLogManager() : {
+  error () {}
+}
+
 /**
  * @param {ArrayBuffer} arrrayBuffer
  * @returns {string} 
@@ -62,10 +66,11 @@ Page({
         book.__hash = arrayBufferToHex(new Md5().update(data).digest())
 
         showLoading()
-        book.open(data).catch(() => {
+        book.open(data).catch((err) => {
           hideLoading()
           removeGlobal(GlobalKey.BOOK)
           removeGlobal(GlobalKey.BOOK_INFO)
+          log.error(err.message)
           alert('不是有效的 EPUB 文件')
         })
 
