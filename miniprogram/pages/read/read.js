@@ -1,4 +1,4 @@
-const { getGlobal } = require('../../util/global.js')
+const { getGlobal, setGlobal } = require('../../util/global.js')
 const { GlobalKey } = require('../../util/constants.js')
 const ZipCache = require('../../util/cache.js')
 const { path } = require('../../util/deps.js')
@@ -100,6 +100,19 @@ Page({
       cFontSize: config['fontSize'] || '32rpx',
       cColor: config['color'] || '#333',
     })
+  },
+  onUnload () {
+    const book = getGlobal(GlobalKey.BOOK)
+    if (book) {
+      book.destroy()
+      setGlobal(GlobalKey.BOOK, null)
+    }
+    const zip = getGlobal(GlobalKey.ZIP)
+    if (zip) {
+      zip.clear()
+      setGlobal(GlobalKey.ZIP, null)
+    }
+    setGlobal(GlobalKey.BOOK_INFO, null)
   },
   _goConfig () {
     wx.navigateTo({

@@ -6,6 +6,8 @@ const { localStorage, StorageKey } = require('../../util/storage.js')
 const { alert, showLoading, hideLoading } = require('../../util/modal.js')
 const { Md5 } = require('../../lib/md5.js')
 
+const fs = wx.getFileSystemManager()
+
 const log = typeof wx.getRealtimeLogManager === 'function' ? wx.getRealtimeLogManager() : {
   error () {}
 }
@@ -33,17 +35,6 @@ Page({
     this.setData({
       cBackgroundColor: (localStorage.getItem(StorageKey.CONFIG) || {})['backgroundColor'] || '#c7edcc'
     })
-    const book = getGlobal(GlobalKey.BOOK)
-    if (book) {
-      book.destroy()
-      setGlobal(GlobalKey.BOOK, null)
-    }
-    const zip = getGlobal(GlobalKey.ZIP)
-    if (zip) {
-      zip.clear()
-      setGlobal(GlobalKey.ZIP, null)
-    }
-    setGlobal(GlobalKey.BOOK_INFO, null)
   },
   goConfig () {
     wx.navigateTo({
@@ -56,7 +47,6 @@ Page({
       type: 'file',
       success: (res) => {
         const tempFilePaths = res.tempFiles
-        const fs = wx.getFileSystemManager()
         const data = fs.readFileSync(tempFilePaths[0].path)
 
         const book = setGlobal(GlobalKey.BOOK, ePub({
