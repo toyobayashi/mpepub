@@ -13,3 +13,19 @@
   max-width: 100%;
   vertical-align: bottom;
 }
+
+.domel__ruby {
+  display: inline-block;
+  text-indent: 0;
+}
+
+.domel__ruby .domel__ruby-group {
+  display: inline-block;
+  text-align: center;
+}
+
+.domel__ruby .domel__ruby-group .rt {
+  font-size: 20rpx;
+  line-height: 16rpx;
+  height: 16rpx;
+}

@@ -120,4 +120,18 @@
   </block>
 </text>
 
+<view
+  style="{{node.attrs.style || ''}}"
+  class="domel__ruby {{node.attrs.class || ''}}"
+  wx:elif="{{node.name === 'ruby'}}">
+  <block wx:for="{{node.children}}" wx:for-item="item" wx:for-index="i"  wx:key="key">
+    <!-- <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.name === 'rt'}}">({{item.children[0].text}})</block> -->
+    <view class="domel__ruby-group" style="display:inline-block" wx:if="{{item.type === 'text'}}">
+      <view class="rt">{{node.children[i + 1].children[0].text}}</view>
+      <view>{{item.text}}</view>
+    </view>
+  </block>
+</view>
+
 <block wx:else></block>
