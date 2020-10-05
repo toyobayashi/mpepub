@@ -112,7 +112,7 @@ Page({
       zip.clear()
       setGlobal(GlobalKey.ZIP, null)
     }
-    setGlobal(GlobalKey.BOOK_INFO, null)
+    setGlobal(GlobalKey.BOOK_INFO, {})
   },
   _goConfig () {
     wx.navigateTo({
@@ -147,6 +147,7 @@ Page({
   },
   _next () {
     const info = getGlobal(GlobalKey.BOOK_INFO)
+    if (!info || !info.spine) return
     const sections = info.spine.items
     if (this.data.spineIndex >= sections.length - 1) {
       showToast('已经到最后啦')

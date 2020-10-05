@@ -97,6 +97,12 @@ Page({
         book.ready.then(() => {
           setGlobal(GlobalKey.ZIP, new ZipCache(book.archive.zip))
           hideLoading()
+          if (Object.keys(info).length === 0 || !info.meta || !info.spine) {
+            removeGlobal(GlobalKey.BOOK)
+            removeGlobal(GlobalKey.BOOK_INFO)
+            alert('暂不支持该 EPUB 文件')
+            return
+          }
           wx.navigateTo({
             url: '/pages/read/read',
           })
