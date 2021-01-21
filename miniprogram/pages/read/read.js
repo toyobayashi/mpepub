@@ -178,6 +178,7 @@ Page({
   },
   _saveReadingPosition (spineIndex, scrollTop) {
     const book = getGlobal(GlobalKey.BOOK)
+    if (!book) return
     const bookKey = book.key() + ':' + book.__hash
     const state = localStorage.getItem(StorageKey.STATE) || {}
     state[bookKey] = state[bookKey] || {}

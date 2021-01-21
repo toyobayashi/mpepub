@@ -1,3 +1,4 @@
+require('./util/runtime.js')
 const env = require('./util/env.js')
 
 App({
