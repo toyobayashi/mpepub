@@ -1,4 +1,8 @@
-require('./util/runtime.js')
+if (typeof regeneratorRuntime === 'undefined') {
+  try {
+    require('./util/runtime.js')
+  } catch (_) {}
+}
 const env = require('./util/env.js')
 
 App({
