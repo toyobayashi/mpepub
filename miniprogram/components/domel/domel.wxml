@@ -1,11 +1,12 @@
-<block wx:if="{{node.type === 'text'}}">{{node.text}}</block>
+<block wx:if="{{node.type === 'text'}}"><text selectable="{{selectable}}">{{node.text}}</text></block>
 
 <text
+  selectable="{{selectable}}"
   style="{{node.attrs.style || ''}}"
   class="domel__span {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'span'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </text>
@@ -34,7 +35,7 @@
   class="domel__body {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'body'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -44,7 +45,7 @@
   class="domel__div {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'div'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -54,7 +55,7 @@
   class="domel__h1 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h1'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -64,7 +65,7 @@
   class="domel__h2 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h2'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -74,7 +75,7 @@
   class="domel__h3 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h3'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -84,7 +85,7 @@
   class="domel__h4 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h4'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -94,7 +95,7 @@
   class="domel__h5 {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'h5'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -104,7 +105,7 @@
   class="domel__p {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'p'}}">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </view>
@@ -115,7 +116,7 @@
   wx:elif="{{node.name === 'a'}}"
   bindtap="_jumpA">
   <block wx:for="{{node.children}}" wx:key="key">
-    <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <domel wx:else node="{{item}}"></domel>
   </block>
 </text>
@@ -125,11 +126,11 @@
   class="domel__ruby {{node.attrs.class || ''}}"
   wx:elif="{{node.name === 'ruby'}}">
   <block wx:for="{{node.children}}" wx:for-item="item" wx:for-index="i"  wx:key="key">
-    <!-- <block wx:if="{{item.type === 'text'}}">{{item.text}}</block>
+    <!-- <block wx:if="{{item.type === 'text'}}"><text selectable="{{selectable}}">{{item.text}}</text></block>
     <block wx:if="{{item.name === 'rt'}}">({{item.children[0].text}})</block> -->
     <view class="domel__ruby-group" style="display:inline-block" wx:if="{{item.type === 'text'}}">
       <view class="rt">{{node.children[i + 1].children[0].text}}</view>
-      <view>{{item.text}}</view>
+      <view><text selectable="{{selectable}}">{{item.text}}</text></view>
     </view>
   </block>
 </view>

@@ -7,7 +7,8 @@ Component({
   },
   data: {
     svgStyle: '',
-    imgStyle: ''
+    imgStyle: '',
+    selectable: wx.canIUse('text.selectable')
   },
   methods: {
     _previewImg () {
