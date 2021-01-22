@@ -6,7 +6,7 @@
 	"setting": {
 		"urlCheck": false,
 		"es6": true,
-		"enhance": false,
+		"enhance": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
 		"minified": true,
@@ -31,7 +31,7 @@
 		"userConfirmedUseCompilerModuleSwitch": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.13.0",
+	"libVersion": "2.14.1",
 	"appid": "wxc9b6526ffefd8a97",
 	"projectname": "mpepub",
 	"debugOptions": {
